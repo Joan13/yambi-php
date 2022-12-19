@@ -10,7 +10,7 @@
     $valid_extensions = array('jpeg', 'jpg', 'png', 'gif', 'bmp');
     if(isset($_POST['submit'])) {
 
-        $user_id = trim(strip_tags($_POST["user_id"]));
+        $phone_number = trim(strip_tags($_POST["phone_number"]));
 
         if (!empty($_FILES['image'])) {
             $path = "../images/profile_pictures/";
@@ -19,21 +19,21 @@
             $ext = strtolower(pathinfo($img, PATHINFO_EXTENSION));
 
             $name = rand(0, 999999) . "" . rand(0, 999999) . "" . rand(0, 999999) . "" . date('d') . "" . date('m') . "" . date('Y') . "" . date('H') . "" . date('i');
-            $final_name_image = "yambi".$user_id."".$name.".".$ext;
+            $final_name_image = "yambi".$phone_number."".$name.".".$ext;
 
             if (in_array($ext, $valid_extensions)) {
                 $path = $path.strtolower($final_name_image);
 
                 if(move_uploaded_file($_FILES['image']['tmp_name'], $path)) {
 
-                    $query_update_picture = "UPDATE yambi_users SET profile_picture=? WHERE user_id=?";
-                    $request_update_picture = $database_connect->prepare($query_update_picture);
-                    $request_update_picture->execute(array($final_name_image, $user_id));
+                    $query_update_profile = "UPDATE yb_table_users SET user_profile=? WHERE phone_number=?";
+                    $request_update_profile = $database_connect->prepare($query_update_profile);
+                    $request_update_profile->execute(array($final_name_image, $phone_number));
 
-                    $user_data = user_data_id($user_id);
-
+                    $user_data = user_data($phone_number);
                     $response['assemble'] = $user_data;
                     $response['success'] = '1';
+
                     echo json_encode($response);
                 } else {
                     $response['success'] = '2';
@@ -50,4 +50,5 @@
             echo json_encode($response);
         }
     }
+?>
 

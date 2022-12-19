@@ -12,7 +12,6 @@
 
     foreach($data as $cle => $con) {
 
-        // array_push($array_paiements, $paiement);
         $contact = array();
 
         $verify_query = "SELECT phone_number, COUNT(*) AS count_contact_exists FROM yb_table_users WHERE phone_number=?";

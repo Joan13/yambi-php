@@ -2,6 +2,17 @@
 
     require_once("dbconnect.functions.php");
 
+    function user_data($phone_number) {
+        global $database_connect;
+
+        $queryUserData = "SELECT * FROM yb_table_users WHERE phone_number=?";
+        $requestUserData = $database_connect->prepare($queryUserData);
+        $requestUserData->execute(array($phone_number));
+        $responseUserData = $requestUserData->fetchObject();
+
+        return $responseUserData;
+    }
+
     function user_exists($username, $password) {
         global $database_connect;
 
@@ -13,7 +24,7 @@
         return $responseCountUser->count_user_exists;
     }
 
-    function user_data($username, $password) {
+    function user_data1($username, $password) {
         global $database_connect;
 
         $queryUserData = "SELECT * FROM yambi_users WHERE username=? AND user_password=?";
